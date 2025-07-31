@@ -5,3 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 })
+
+export interface ImportMetaEnv {
+  readonly VITE_BACKEND_URL: string
+}
+
+export interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
