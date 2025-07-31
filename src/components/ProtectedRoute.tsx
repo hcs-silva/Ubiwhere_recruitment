@@ -11,10 +11,12 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { isLoggedIn } = authContext || { isLoggedIn: false };
   console.log("isLoggedIn:", isLoggedIn);
 
+  // Check if the user is logged in
+
   if (!isLoggedIn) {
     alert("You must be logged in to access this page.");
     return <Navigate to="/" />;
   }
-  return (<div>{children}</div>);
+  return <div>{children}</div>;
 };
 export default PrivateRoute;

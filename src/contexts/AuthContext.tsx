@@ -6,6 +6,7 @@ type AuthContextType = {
   isLoggedIn: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   handleLogout: () => void;
+  authenticateUser: (token: string) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,8 +17,12 @@ type AuthWrapperProps = {
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
- 
- 
+  const authenticateUser = (token: string) => {
+    if (!token || token === "null") {
+      setIsLoggedIn(false);
+    }
+  };
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -27,7 +32,9 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, handleLogout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, setIsLoggedIn, handleLogout, authenticateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
