@@ -9,6 +9,7 @@ type PrivateRouteProps = {
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const authContext = useContext(AuthContext);
   const { isLoggedIn } = authContext || { isLoggedIn: false };
+  console.log("isLoggedIn:", isLoggedIn);
 
   if (!isLoggedIn) {
     alert("You must be logged in to access this page.");
