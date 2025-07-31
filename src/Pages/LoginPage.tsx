@@ -1,11 +1,22 @@
 import { useState } from "react";
 import axios from "axios";
+import styles from "../styles/LoginPage.module.css";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext.tsx";
+import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
+const navigate = useNavigate();
+   const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within an AuthWrapper");
+  }
+    const { setIsLoggedIn } = authContext;
 
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
@@ -18,6 +29,9 @@ function LoginPage() {
     try {
       const response = await axios.post(`${BACKEND_URL}/token`, userToLogin);
       console.log(response.data);
+        localStorage.setItem("token", response.data.access_token);
+      setIsLoggedIn(true);
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -25,7 +39,8 @@ function LoginPage() {
 
   return (
     <>
-      <form onSubmit={handleLogin}>
+      <h1>Login</h1>
+      <form onSubmit={handleLogin} className={styles.loginForm}>
         <label>
           Email:
           <br />
