@@ -1,3 +1,4 @@
+import LoginPage from "./Pages/LoginPage"
 
 
 function App() {
@@ -5,8 +6,8 @@ function App() {
 
   return (
     <>
-      <h1>Welcome to My App</h1>
-      <p>This is a simple React application.</p>      
+      <h1>Login</h1>       
+      <LoginPage />   
     </>
   )
 }
