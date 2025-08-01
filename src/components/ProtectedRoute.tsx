@@ -8,13 +8,17 @@ type PrivateRouteProps = {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const authContext = useContext(AuthContext);
-  const { isLoggedIn } = authContext || { isLoggedIn: false };
+  const { isLoggedIn, isInitialized } = authContext || { isLoggedIn: false };
   console.log("isLoggedIn:", isLoggedIn);
+
+  if (!isInitialized) {
+    return <div>Loading...</div>;
+  }
 
   // Check if the user is logged in
 
   if (!isLoggedIn) {
-    alert("You must be logged in to access this page.");
+    
     return <Navigate to="/" />;
   }
   return <div>{children}</div>;

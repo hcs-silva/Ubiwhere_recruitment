@@ -7,9 +7,12 @@ import axios from "axios";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 function Map() {
-
-    const [earthquakes, setEarthquakes] = useState([]);
+  const [earthquakes, setEarthquakes] = useState([]);
   type LeafletMapElement = HTMLElement & { _leaflet_id?: number };
+
+  interface Quake {
+    coordinates: {lat: number, long:number};
+  }
 
   const authContext = useContext(AuthContext);
   if (!authContext) {
@@ -28,38 +31,57 @@ function Map() {
     // Initialize the map
     const map = L.map("map").setView([40.64427, -8.64554], 13);
 
+   
+    //Add markers
+    const marker = L.marker([40.64427, -8.64554]).addTo(map);
+    marker.bindTooltip("Test Marker").openTooltip();
+
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 19,
     }).addTo(map);
 
-    //Add markers
+    earthquakes.forEach((quake: Quake) => {
+      const { coordinates } = quake;  
+      const marker = L.marker([coordinates.lat, coordinates.long]).addTo(map);
+      marker.bindTooltip(`Latitude:${coordinates.lat},Longitude ${coordinates.long}`).openTooltip();
+      });
 
+   
+    
     //Map cleanup on unmount
     return () => {
       map.remove();
     };
-  }, []);
+  }, [earthquakes]);
 
-  const getEarthquakes = async () => {
-    try {
-      await axios.get(`${BACKEND_URL}/earthquakes`, getAuthConfig()).then((response) => {
-      setEarthquakes(response.data);})
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  useEffect(()=> {
+     // Fetch earthquake data from the backend
+    const fetchEarthquakes = async () => {
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/earthquakes`,
+          getAuthConfig()
+        );
+        
+        setEarthquakes(response.data);
+      } catch (error) {
+        console.error("Error fetching earthquake data:", error);
+      }
+    };
+
+    fetchEarthquakes();
+
+    
+  }, [getAuthConfig])
+
+ 
   //TODO: add one marker to the map for testing purposes and then loop through the earthquakes array to add markers for each earthquake
   //TODO: Complete reading the documentation on the leaflet library to understand how to add markers and popups
 
 
-  earthquakes.map((earthquake: any) => {
-    const { coordiantes } = earthquake;
-    console.log("Coordinates:", coordiantes);
-    // const marker = L.marker([coordiantes.lat, coordiantes.long]).addTo(map);    
-  })
-  
+
   return <div id="map" className={style.map}></div>;
 }
 

@@ -6,6 +6,7 @@ import type { AxiosRequestConfig } from "axios";
  // Replace with your backend URL
 type AuthContextType = {
   isLoggedIn: boolean;
+  isInitialized: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   handleLogout: () => void;
   authenticateUser: (token: string) => void;  
@@ -19,6 +20,7 @@ type AuthWrapperProps = {
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
 const getAuthConfig = () => ({
     headers: {
@@ -31,14 +33,19 @@ const getAuthConfig = () => ({
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token && token !== "null") {
-      setIsLoggedIn(true);
+      setIsLoggedIn(true);      
+    }else {
+      setIsLoggedIn(false);
     }
+    setIsInitialized(true);
   }, []);
 
   const authenticateUser = (token: string) => {
     if (!token || token === "null") {
+      localStorage.removeItem("token");
       setIsLoggedIn(false);
     } else {
+      localStorage.setItem("token", token);
       setIsLoggedIn(true);
     }
   };
@@ -55,7 +62,7 @@ const getAuthConfig = () => ({
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, handleLogout, authenticateUser , getAuthConfig}}
+      value={{ isLoggedIn, setIsLoggedIn, handleLogout, authenticateUser , getAuthConfig, isInitialized}}
     >
       {children}
     </AuthContext.Provider>
