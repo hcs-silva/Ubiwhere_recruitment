@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstace.ts";
 
 function QuakeDetailsPage() {
   const { Id } = useParams();
@@ -22,7 +22,7 @@ const navigate = useNavigate();
 
   useEffect(() => {
     try {
-     axios.get(`${BACKEND_URL}/earthquakes/${Id}`, {
+     axiosInstance.get(`${BACKEND_URL}/earthquakes/${Id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           "Content-Type": "application/json",

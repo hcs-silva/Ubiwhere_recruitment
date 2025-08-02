@@ -2,10 +2,10 @@ import L from "leaflet";
 import React, { useContext, useEffect, useState } from "react";
 import style from "../styles/Map.module.css";
 import { AuthContext } from "../contexts/AuthContext.tsx";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstace.ts";
 import { useNavigate} from "react-router-dom";    
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+
 
 function Map() {
   const [earthquakes, setEarthquakes] = useState([]);
@@ -70,8 +70,8 @@ function Map() {
 async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
       try {
-        const response = await axios.get(
-          `${BACKEND_URL}/earthquakes`
+        const response = await axiosInstance.get(
+          `/earthquakes`
           ,
           {
             params: {

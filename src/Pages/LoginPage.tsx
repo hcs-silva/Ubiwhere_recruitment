@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstace.ts";
 import styles from "../styles/LoginPage.module.css";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext.tsx";
@@ -27,7 +27,7 @@ const navigate = useNavigate();
     };
     console.log(userToLogin);
     try {
-      const response = await axios.post(`${BACKEND_URL}/token`, userToLogin);
+      const response = await axiosInstance.post(`${BACKEND_URL}/token`, userToLogin);
       console.log(response.data);
         localStorage.setItem("accessToken", response.data.access_token);
       localStorage.setItem("refreshToken", response.data.refresh_token);

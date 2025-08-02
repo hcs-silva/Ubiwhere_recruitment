@@ -23,17 +23,16 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
 const getAuthConfig = () => ({
-  params: {
-    limit: 10,},
+  
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       'Content-Type': 'application/json',
     }
   });
 
   //Check if token exists in localStorage on initial load(to ensute persistence os the authentication state)
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (token && token !== "null") {
       setIsLoggedIn(true);      
     }else {
