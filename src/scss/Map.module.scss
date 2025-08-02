@@ -1,9 +1,7 @@
-body {
-  display: flex;
-}
+
 .map {
   height: 600px;
-  width: 800px;
+  width: 1400px;
   margin: 20px;
   border-radius: 25px;
 }
@@ -13,7 +11,7 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 500px;
+  width: 700px;
   gap: 10px;
   margin-bottom: 20px;
   .submitButton {
@@ -25,6 +23,9 @@ form {
     color: white;
     border: none;
     border-radius: 5px;
+     &:hover {
+      background-color: #0056b3;
+    }
   }
   label {
     display: flex;
@@ -63,6 +64,9 @@ form {
       background-color: #ccc;
       cursor: not-allowed;
     }
+     &:hover {
+      background-color: #0056b3;
+    }
   }
   span {
     margin: 10px;
@@ -79,15 +83,17 @@ form {
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  &:hover {
+    background-color: #c82333;
+  }
 }
 
 .container{
   display: flex;
-
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: 1200px;
+  width: 100vw;
+  max-width: 1600px;
   margin: auto;
   padding: 20px;
   box-sizing: border-box;
