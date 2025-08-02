@@ -29,7 +29,8 @@ const navigate = useNavigate();
     try {
       const response = await axios.post(`${BACKEND_URL}/token`, userToLogin);
       console.log(response.data);
-        localStorage.setItem("token", response.data.access_token);
+        localStorage.setItem("accessToken", response.data.access_token);
+      localStorage.setItem("refreshToken", response.data.refresh_token);
       setIsLoggedIn(true);
       navigate("/dashboard");
     } catch (error) {

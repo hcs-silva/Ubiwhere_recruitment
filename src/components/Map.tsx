@@ -1,17 +1,24 @@
 import L from "leaflet";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import style from "../styles/Map.module.css";
 import { AuthContext } from "../contexts/AuthContext.tsx";
 import axios from "axios";
+import { useNavigate} from "react-router-dom";    
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 
 function Map() {
   const [earthquakes, setEarthquakes] = useState([]);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const Navigate = useNavigate(); 
   type LeafletMapElement = HTMLElement & { _leaflet_id?: number };
 
   interface Quake {
-    coordinates: {lat: number, long:number};
+    coordinates: { lat: number; long: number };
+    location: string;
+    id: string;
   }
 
   const authContext = useContext(AuthContext);
@@ -19,7 +26,7 @@ function Map() {
     throw new Error("AuthContext must be used within an AuthWrapper");
   }
 
-  const { getAuthConfig } = authContext;
+  
 
   useEffect(() => {
     //Check if the map container exists,and if it does do not create another instance
@@ -31,10 +38,9 @@ function Map() {
     // Initialize the map
     const map = L.map("map").setView([40.64427, -8.64554], 13);
 
-   
     //Add markers
-    const marker = L.marker([40.64427, -8.64554]).addTo(map);
-    marker.bindTooltip("Test Marker").openTooltip();
+    const marker = L.marker([40.64687, -8.64321]).addTo(map);
+    marker.bindTooltip("Ubiwhere");
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -43,46 +49,72 @@ function Map() {
     }).addTo(map);
 
     earthquakes.forEach((quake: Quake) => {
-      const { coordinates } = quake;  
+      const { coordinates, location, id } = quake;
       const marker = L.marker([coordinates.lat, coordinates.long]).addTo(map);
-      marker.bindTooltip(`Latitude:${coordinates.lat},Longitude ${coordinates.long}`).openTooltip();
-      });
+      marker
+        .bindTooltip(
+          `Location:${location}`
+        ).on("click", () => {
+          Navigate(`/earthquake/details/${id}`);
+        });
+    });
 
-   
-    
     //Map cleanup on unmount
     return () => {
       map.remove();
     };
-  }, [earthquakes]);
+  }, [earthquakes, Navigate]);
 
-  useEffect(()=> {
-     // Fetch earthquake data from the backend
-    const fetchEarthquakes = async () => {
+ 
+    // Fetch earthquake data from the backend
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault();
       try {
         const response = await axios.get(
-          `${BACKEND_URL}/earthquakes`,
-          getAuthConfig()
+          `${BACKEND_URL}/earthquakes`
+          ,
+          {
+            params: {
+              limit: 10,
+              page: 1,
+              startDate: startDate || undefined,
+              endDate: endDate || undefined,
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+              'Content-Type': 'application/json',
+            }
+          }
         );
-        
+        console.log("Response data:", response.data);
         setEarthquakes(response.data);
+
       } catch (error) {
         console.error("Error fetching earthquake data:", error);
       }
     };
 
-    fetchEarthquakes();
-
-    
-  }, [getAuthConfig])
-
  
-  //TODO: add one marker to the map for testing purposes and then loop through the earthquakes array to add markers for each earthquake
-  //TODO: Complete reading the documentation on the leaflet library to understand how to add markers and popups
+
+  
 
 
-
-  return <div id="map" className={style.map}></div>;
+  return (
+    <>
+      <div id="map" className={style.map}></div>
+      <form className="queries" onSubmit={handleSubmit}>
+        <label>
+          Start Date (YYYY-MM-DD):
+          <input type="text" name="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
+        </label>
+        <label>
+          End Date (YYYY-MM-DD):
+          <input type="text" name="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
+        </label>
+        <button type="submit" className="submit">Search</button>
+      </form>
+    </>
+  );
 }
 
 export default Map;

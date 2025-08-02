@@ -13,7 +13,7 @@ function DashboardPage() {
   const { handleLogout, authenticateUser } = authContext;
   
   useEffect(() => {
-    const existingToken = localStorage.getItem("token");
+    const existingToken = localStorage.getItem("accessToken");
     if (existingToken) {
         authenticateUser(existingToken);
     } else {

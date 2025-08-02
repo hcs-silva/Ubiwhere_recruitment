@@ -6,7 +6,20 @@
 .map {
   height: 600px;
   width: 500px;
-  margin: 50px;
+  margin: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+form .submit {
+  height: 120px;
+  width: 120px;
+  padding: 0.3rem;
+  background-color: #007bff;
 }
 
 /*# sourceMappingURL=Map.module.css.map */

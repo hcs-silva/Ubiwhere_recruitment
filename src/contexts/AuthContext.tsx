@@ -23,6 +23,8 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
 const getAuthConfig = () => ({
+  params: {
+    limit: 10,},
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
@@ -42,10 +44,10 @@ const getAuthConfig = () => ({
 
   const authenticateUser = (token: string) => {
     if (!token || token === "null") {
-      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
       setIsLoggedIn(false);
     } else {
-      localStorage.setItem("token", token);
+      localStorage.setItem("accessToken", token);
       setIsLoggedIn(true);
     }
   };
@@ -55,7 +57,9 @@ const getAuthConfig = () => ({
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     setIsLoggedIn(false);
     navigate("/");
   };
