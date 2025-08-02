@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import{ useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext.tsx";
-import styles from "../styles/DashboardPage.module.css";
+import dashboardStyles from "../styles/DashboardPage.module.css";
 import Map from "../components/Map";
 
 function DashboardPage() {
@@ -23,10 +23,10 @@ function DashboardPage() {
   }, [authenticateUser, navigate]);
 
   return (
-    <div className={styles.dashboardContainer}>
+    <div className={dashboardStyles.dashboardContainer}>
       <h1>Dashboard</h1>
       <Map />
-      <button onClick={handleLogout} className={styles.Button}>
+      <button onClick={handleLogout} className={dashboardStyles.logoutButton}>
         Logout
       </button>
     </div>

@@ -1,6 +1,6 @@
 import L from "leaflet";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import style from "../styles/Map.module.css";
+import mapStyle from "../styles/Map.module.css";
 import { AuthContext } from "../contexts/AuthContext.tsx";
 import axiosInstance from "../api/axiosInstance.ts";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -133,14 +133,12 @@ function Map() {
     earthquakes.forEach((quake: Quake) => {
       const { coordinates, location, id } = quake;
       const marker = L.marker([coordinates.lat, coordinates.long]).addTo(map);
-      marker
-        .bindTooltip(`Location: ${location}`)
-        .on("click", () => {
-          // Navigate to details with current URL search params to preserve state
-          navigate(`/earthquake/details/${id}${urlLocation.search}`);
-        });
+      marker.bindTooltip(`Location: ${location}`).on("click", () => {
+        // Navigate to details with current URL search params to preserve state
+        navigate(`/earthquake/details/${id}${urlLocation.search}`);
+      });
     });
-    
+
     // Cleanup on unmount
     return () => {
       map.remove();
@@ -148,59 +146,63 @@ function Map() {
   }, [earthquakes, navigate, urlLocation.search]);
 
   return (
-    <>
-      <div id="map" className={style.map}></div>
+    <div className={mapStyle.container}>
+      <div id="map" className={mapStyle.map}></div>
 
-      <form className="queries" onSubmit={handleSubmit}>
-        <label>
-          Start Date (YYYY-MM-DD):
-          <input
-            type="text"
-            name="startDate"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-        </label>
+      <div>
+        <form className="queries" onSubmit={handleSubmit}>
+          <label className={mapStyle.label}>
+            Start Date (YYYY-MM-DD):
+            <input
+              type="text"
+              name="startDate"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </label>
 
-        <label>
-          End Date (YYYY-MM-DD):
-          <input
-            type="text"
-            name="endDate"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-        </label>
+          <label className={mapStyle.label}>
+            End Date (YYYY-MM-DD):
+            <input
+              type="text"
+              name="endDate"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </label>
 
-        <button type="submit" className="submit">
-          Search
+          <button type="submit" className={mapStyle.submitButton}>
+            Search
+          </button>
+        </form>
+
+        {earthquakes.length > 0 && (
+          <div className={mapStyle.pagination}>
+            <button
+              onClick={() => handlePageChange(Math.max(page - 1, 1))}
+              disabled={page === 1}
+            >
+              ◀ Previous
+            </button>
+
+            <span>
+              Page {page} of {MAX_PAGES}
+            </span>
+
+            <button
+              onClick={() => handlePageChange(Math.min(page + 1, MAX_PAGES))}
+              disabled={page === MAX_PAGES}
+            >
+              Next ▶
+            </button>
+          </div>
+        )}
+
+        <button onClick={handleClearSearch} className={mapStyle.clearButton}>
+          Clear Search
         </button>
-      </form>
-
-      {earthquakes.length > 0 && (
-        <div className="pagination">
-          <button
-            onClick={() => handlePageChange(Math.max(page - 1, 1))}
-            disabled={page === 1}
-          >
-            ◀ Previous
-          </button>
-
-          <span>
-            Página {page} de {MAX_PAGES}
-          </span>
-
-          <button
-            onClick={() => handlePageChange(Math.min(page + 1, MAX_PAGES))}
-            disabled={page === MAX_PAGES}
-          >
-            Next ▶
-          </button>
-        </div>
-      )}
-
-      <button onClick={handleClearSearch}>Clear Search</button>
-    </>
+      </div>
+    </div>
   );
 }
 
