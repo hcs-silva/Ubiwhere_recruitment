@@ -1,0 +1,108 @@
+@import './_variables.scss';
+
+// Button mixin for consistent button styling
+@mixin button-base {
+    padding: 0.5rem;
+    border: none;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    font-size: $font-size-sm;
+    transition: background-color $transition-fast;
+    text-align: center;
+}
+
+@mixin button-primary {
+    @include button-base;
+    background-color: $primary-color;
+    color: $white;
+    
+    &:hover {
+        background-color: $primary-hover;
+    }
+}
+
+@mixin button-danger {
+    @include button-base;
+    background-color: $danger-color;
+    color: $white;
+    
+    &:hover {
+        background-color: $danger-hover;
+    }
+}
+
+@mixin button-disabled {
+    @include button-base;
+    background-color: $disabled-gray;
+    color: $text-light;
+    cursor: not-allowed;
+}
+
+// Form input mixin
+@mixin input-base {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid $border-gray;
+    border-radius: $border-radius-sm;
+    box-sizing: border-box;
+    font-size: $font-size-sm;
+}
+
+// Card mixin
+@mixin card-base {
+    background-color: $bg-card;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+    padding: $spacing-md;
+    box-sizing: border-box;
+}
+
+// Flex center mixin
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-column-center {
+    @include flex-center;
+    flex-direction: column;
+}
+
+// Responsive breakpoint mixins
+@mixin mobile {
+    @media (max-width: $breakpoint-mobile) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: $breakpoint-mobile + 1px) and (max-width: $breakpoint-tablet) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: $breakpoint-tablet + 1px) {
+        @content;
+    }
+}
+
+// Typography mixins
+@mixin heading-large {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+}
+
+@mixin heading-medium {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-sm;
+}
+
+@mixin text-body {
+    font-size: $font-size-sm;
+    line-height: 1.5;
+    color: $text-dark;
+} 

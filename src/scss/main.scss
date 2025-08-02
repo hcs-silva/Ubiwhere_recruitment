@@ -1,0 +1,78 @@
+// Import variables and mixins for global use
+@import './_variables.scss';
+@import './_mixins.scss';
+
+// Global styles
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: $font-family-primary;
+    background-color: $bg-primary;
+    color: $text-dark;
+    line-height: 1.6;
+}
+
+// Global button styles
+button {
+    cursor: pointer;
+    transition: all $transition-fast;
+    
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+}
+
+// Global input styles
+input {
+    font-family: inherit;
+    
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+}
+
+// Global link styles
+a {
+    color: $primary-color;
+    text-decoration: none;
+    transition: color $transition-fast;
+    
+    &:hover {
+        color: $primary-hover;
+    }
+}
+
+// Utility classes
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-1 { margin-bottom: $spacing-xs; }
+.mb-2 { margin-bottom: $spacing-sm; }
+.mb-3 { margin-bottom: $spacing-md; }
+.mb-4 { margin-bottom: $spacing-lg; }
+
+.mt-1 { margin-top: $spacing-xs; }
+.mt-2 { margin-top: $spacing-sm; }
+.mt-3 { margin-top: $spacing-md; }
+.mt-4 { margin-top: $spacing-lg; }
+
+.p-1 { padding: $spacing-xs; }
+.p-2 { padding: $spacing-sm; }
+.p-3 { padding: $spacing-md; }
+.p-4 { padding: $spacing-lg; } 

@@ -5,6 +5,7 @@ A modern React-based web application for monitoring and visualizing earthquake d
 ## 🚀 Features
 
 ### Core Functionality
+
 - **Interactive Map Visualization**: Real-time earthquake data displayed on Leaflet maps
 - **Authentication System**: Secure login/logout with JWT token management
 - **Earthquake Details**: Detailed view of individual earthquake information
@@ -13,6 +14,7 @@ A modern React-based web application for monitoring and visualizing earthquake d
 - **Responsive Design**: Mobile-friendly interface with adaptive layouts
 
 ### Technical Features
+
 - **TypeScript**: Full type safety and better development experience
 - **Modern React**: Built with React 19 and latest hooks
 - **SCSS Styling**: Modular CSS with SCSS preprocessing
@@ -23,6 +25,7 @@ A modern React-based web application for monitoring and visualizing earthquake d
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 19.1.0** - Modern React with latest features
 - **TypeScript 5.8.3** - Type-safe JavaScript
 - **Vite 7.0.4** - Fast build tool and dev server
@@ -32,6 +35,7 @@ A modern React-based web application for monitoring and visualizing earthquake d
 - **SCSS 1.89.2** - CSS preprocessing
 
 ### Development Tools
+
 - **ESLint 9.30.1** - Code linting and formatting
 - **TypeScript ESLint** - TypeScript-specific linting rules
 - **React Hooks ESLint Plugin** - React hooks linting
@@ -166,10 +170,6 @@ The application uses JWT-based authentication with automatic token refresh:
 - **Forms**: Styled inputs and buttons with hover effects
 
 ## 🔧 Configuration
-
-### Environment Variables
-
-- `VITE_BACKEND_URL`: Backend API base URL (default: http://localhost:3000)
 
 ### Build Configuration  
 
