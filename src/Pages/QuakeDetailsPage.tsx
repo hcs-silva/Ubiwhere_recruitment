@@ -1,14 +1,15 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axiosInstance from "../api/axiosInstace.ts";
+import axiosInstance from "../api/axiosInstance.ts";
 
 function QuakeDetailsPage() {
   const { Id } = useParams();
-  const [quakeDetails, setQuakeDetails] = useState<QuakeDetails|null>(null);
+  const [quakeDetails, setQuakeDetails] = useState<QuakeDetails | null>(null);
   const BACKEND_URL =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
-const navigate = useNavigate();
-    interface QuakeDetails {
+  const navigate = useNavigate();
+  const urlLocation = useLocation();
+  interface QuakeDetails {
     id: string;
     location: string;
     magnitude: number;
@@ -16,27 +17,31 @@ const navigate = useNavigate();
     coordinates: {
       lat: number;
       long: number;
-    },
+    };
   }
 
+  
 
   useEffect(() => {
     try {
-     axiosInstance.get(`${BACKEND_URL}/earthquakes/${Id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          "Content-Type": "application/json",
-        },
-      }).then((response) => {setQuakeDetails(response.data);});
-      
+      axiosInstance
+        .get(`${BACKEND_URL}/earthquakes/${Id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          setQuakeDetails(response.data);
+        });
     } catch (error) {
       console.error("Error fetching earthquake details:", error);
     }
   }, [Id, BACKEND_URL]);
-  console.log("Quake Details:", quakeDetails);
+  console.log(quakeDetails);
 
   function handleBack() {
-    navigate("/dashboard");
+    navigate(`/dashboard${urlLocation.search}`, { replace: true });
   }
   return (
     <div>
@@ -47,12 +52,15 @@ const navigate = useNavigate();
           <p>Location: {quakeDetails.location}</p>
           <p>Magnitude: {quakeDetails.magnitude}</p>
           <p>Date: {new Date(quakeDetails.date).toLocaleString()}</p>
-          <p>Coordinates: {`Latitude: ${quakeDetails.coordinates.lat}, Longitude: ${quakeDetails.coordinates.long}`}</p>
+          <p>
+            Coordinates:{" "}
+            {`Latitude: ${quakeDetails.coordinates.lat}, Longitude: ${quakeDetails.coordinates.long}`}
+          </p>
         </div>
       ) : (
         <p>Loading earthquake details...</p>
       )}
-      <button onClick={handleBack}>Back</button>
+      <button onClick={handleBack}>Back to Map</button>
     </div>
   );
 }

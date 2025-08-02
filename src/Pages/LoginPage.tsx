@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosInstance from "../api/axiosInstace.ts";
+import axiosInstance from "../api/axiosInstance.ts";
 import styles from "../styles/LoginPage.module.css";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext.tsx";
@@ -10,13 +10,13 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-const navigate = useNavigate();
-   const authContext = useContext(AuthContext);
+
+  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
   if (!authContext) {
     throw new Error("AuthContext must be used within an AuthWrapper");
   }
-    const { setIsLoggedIn } = authContext;
+  const { setIsLoggedIn } = authContext;
 
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
@@ -27,9 +27,12 @@ const navigate = useNavigate();
     };
     console.log(userToLogin);
     try {
-      const response = await axiosInstance.post(`${BACKEND_URL}/token`, userToLogin);
+      const response = await axiosInstance.post(
+        `${BACKEND_URL}/token`,
+        userToLogin
+      );
       console.log(response.data);
-        localStorage.setItem("accessToken", response.data.access_token);
+      localStorage.setItem("accessToken", response.data.access_token);
       localStorage.setItem("refreshToken", response.data.refresh_token);
       setIsLoggedIn(true);
       navigate("/dashboard");
