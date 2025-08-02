@@ -18,6 +18,8 @@ function QuakeDetailsPage() {
       lat: number;
       long: number;
     };
+    timestamp: number;
+    depth: number;
   }
 
   
@@ -38,23 +40,24 @@ function QuakeDetailsPage() {
       console.error("Error fetching earthquake details:", error);
     }
   }, [Id, BACKEND_URL]);
-  console.log(quakeDetails);
+  console.log("Quake Details:", quakeDetails);
 
   function handleBack() {
     navigate(`/dashboard${urlLocation.search}`, { replace: true });
   }
   return (
     <div>
-      <h1>QuakeDetailsPage</h1>
+      <h1>Earthquake Detail Page</h1>
       {quakeDetails ? (
-        <div>
+        <div className="quake-details">
           <h2>Details for Earthquake ID: {quakeDetails.id}</h2>
           <p>Location: {quakeDetails.location}</p>
+          <p>Depth: {(quakeDetails.depth).toFixed(5)}</p>
           <p>Magnitude: {quakeDetails.magnitude}</p>
-          <p>Date: {new Date(quakeDetails.date).toLocaleString()}</p>
+          <p>Date: {new Date(quakeDetails.timestamp).toDateString()}</p>
           <p>
             Coordinates:{" "}
-            {`Latitude: ${quakeDetails.coordinates.lat}, Longitude: ${quakeDetails.coordinates.long}`}
+            {`Latitude: ${quakeDetails.coordinates.lat.toFixed(5)}, Longitude: ${(quakeDetails.coordinates.long).toFixed(5)}`}
           </p>
         </div>
       ) : (

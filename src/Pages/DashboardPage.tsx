@@ -24,7 +24,7 @@ function DashboardPage() {
 
   return (
     <div className={styles.dashboardContainer}>
-      <h1>This is the dashboard</h1>
+      <h1>Dashboard</h1>
       <Map />
       <button onClick={handleLogout} className={styles.Button}>
         Logout
